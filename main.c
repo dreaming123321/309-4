@@ -13,6 +13,7 @@
 #include "output.h"
 #include "search.h"
 #include "borrow.h"
+#include "guihuan.h"
 
 
 // 程序主入口
@@ -34,6 +35,7 @@ int main()
         printf("4. 按借阅次数排序显示\n");
         printf("5. 输出信息\n");
         printf("6. 借阅图书\n");
+        printf("7. 归还图书\n");
         printf("0. 退出\n");
         printf("==================================\n");
 
@@ -62,7 +64,10 @@ int main()
                 outputmenu();            // 输出图书信息到屏幕或文件
                 break;
             case 6:
-                borrow();
+                borrow();                // 借阅图书
+                break;
+            case 7:
+                guihuan();               // 归还图书
                 break;
             case 0:
                 printf("再见！\n");       // 退出程序

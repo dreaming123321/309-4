@@ -147,7 +147,7 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %d %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         book[i]=b;
         if(strcmp(b.name,bookname)==0)
     {
@@ -170,7 +170,7 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
     }
     for(i=0;i<count;i++)
     {
-        fprintf(fp2,"%s %s %s %d %d %d\n",book[i].id,book[i].name,book[i].leibie,book[i].totalCopies,book[i].availableCopies,book[i].borrowCount);
+        fprintf(fp2,"%s %s %s %d %d %d %d\n",book[i].id,book[i].name,book[i].leibie,book[i].price,book[i].totalCopies,book[i].availableCopies,book[i].borrowCount);
     }
     fclose(fp2);
 
@@ -195,7 +195,7 @@ int lookname(char *bookname)                  //图书存在返回1，不存在�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %d %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
@@ -219,7 +219,7 @@ int lookcount(char *bookname)                  //图书存在返回借书数目�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %d %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
           if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
