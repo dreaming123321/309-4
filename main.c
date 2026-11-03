@@ -12,6 +12,8 @@
 #include "add_new.h"
 #include "output.h"
 #include "search.h"
+#include "borrow.h"
+
 
 // 程序主入口
 // 显示菜单 → 接收用户选择 → 调用对应模块函数，0 退出循环。
@@ -57,6 +59,9 @@ int main()
                 break;
             case 5:
                 outputmenu();            // 输出图书信息到屏幕或文件
+                break;
+            case 6:
+                borrow();
                 break;
             case 0:
                 printf("再见！\n");       // 退出程序
