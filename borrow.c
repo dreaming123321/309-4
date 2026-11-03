@@ -81,7 +81,8 @@ void borrow()
 }
 void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)
 {
-    int havetime=0;char status[10]="未归还";int guihuanbooks=0;char borrowid[20]={idcreate()};
+    int havetime=0;char status[10]="未归还";int guihuanbooks=0;char borrowid[20]={0};
+    idcreate(borrowid,sizeof(borrowid));
     havetime=dateculculate(borrowtime,guihuantime);
     FILE *fp;
     fp=fopen("borrow.txt","a");
@@ -243,26 +244,26 @@ int looksid1(char *sid)
     return 0;
 }
 
-char *idcreate()
+int idcreate(char *id,size_t size)          //id 传入需要生成的id对应的变量,size_t 一种变量形式，指的是size大小
 {
-    FILE *fp;char line[512];char old[20];char new[20];int num=0;int max=0;
+    FILE *fp;char line[512];char old[20];static char new[20];int num=0;int max=0;
     fp=fopen("borrow.txt","r");
     if(fp==NULL)
     {
         printf("文件打开失败");
         return NULL;
     }
-    while(fget(line,sizeof(line),fp)!=NULL)
+    while(fgets(line,sizeof(line),fp)!=NULL)
     {
         sscanf(line,"%19s",old);
-        sscanf(old,"L%s",&num);
+        sscanf(old,"L%d",&num);
         if(num>max)
         {
             max=num;
         }
     }
-    sprintf(new,"L%06d",max+1);
-    return new;
+    sprintf(id,sizeof(id),"L%06d",max+1);
+    return 1;
 }
 
 
