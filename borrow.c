@@ -37,10 +37,11 @@ void borrow()
            if(borrowcount>lookcount(bookname))
            {
             printf("借阅数量不能大于可借数量");
+            return;
            }
            printf("请输入借阅人姓名：\n");
            scanf("%s",peoplename);
-           printf("请输入借阅人学号：%s\n",sid);
+           printf("请输入借阅人学号：\n",sid);
            scanf("%s",sid);
            if(looksid1(sid)==1)
            {
@@ -68,7 +69,7 @@ void borrow()
 }
 void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)
 {
-    int havetime=0;char status[10]="未归还";
+    int havetime=0;char status[10]="未归还";int guihuanbooks=0;int havebooks=0;
     havetime=dateculculate(borrowtime,guihuantime);
     FILE *fp;
     fp=fopen("borrow.txt","a");
@@ -78,7 +79,7 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
         return;
     }
     fprintf(fp,"%s  %s %s  %s %s %d %d %s\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
-    printf("已保存借阅记录：书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
+    printf("已保存借阅记录：书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 未归还的书：%d本 已归还的书：%d本\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,havebooks=borrowcount,guihuanbooks);
     fclose(fp);
 }
 int dateculculate(char *borrowtime,char *guihuantime)
@@ -219,7 +220,7 @@ int looksid1(char *sid)
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%99s %19s %99s %14s %14s %d %d",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        sscanf(line,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
         if(strcmp(b.sid,sid)==0 && strcmp(b.status,"未归还")==0)
     {
         fclose(fp);
