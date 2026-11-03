@@ -82,7 +82,7 @@ void borrow()
 }
 void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)
 {
-    int havetime=0;char status[10]="未归还";int guihuanbooks=0;char borrowid[20]={0};
+    int havetime=0;char status[10]="未归还";int guihuancount=0;char borrowid[20]={0};
     idcreate(borrowid,sizeof(borrowid));
     havetime=dateculculate(borrowtime,guihuantime);
     FILE *fp;

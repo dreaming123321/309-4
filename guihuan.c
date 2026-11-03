@@ -76,7 +76,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        sscanf(line,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
         if(strcmp(b.sid,sid)==0 && strcmp(b.bookname,bookname)==0 && strcmp(b.status,"未归还")==0)
     {
         match[count]=b;
