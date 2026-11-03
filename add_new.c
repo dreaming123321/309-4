@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "add_new.h"
-#include "book.h"
 
 void add_new_book(void)
 {
@@ -56,7 +55,7 @@ void add_new_book(void)
     }
 
     // 严格按照长格式写入，并保存
-    fprintf(fp_write, "索引：%s 书名：%s 类别：%s 总数：%d 已经借阅：%d 剩余：%d 借阅次数：%d\n", 
+    fprintf(fp_write, "%s %s %s %d %d %d %d\n", 
             id, name, leibie, total, 0, available, borrow);
             
     fclose(fp_write);
