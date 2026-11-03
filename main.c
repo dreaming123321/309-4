@@ -24,7 +24,9 @@ int main()
         printf("0. 退出\n");
         printf("==================================\n");
         printf("请选择操作: ");
-        scanf("%d", &choice);
+        if (scanf("%d", &choice) != 1) {
+            choice = 0; // 解析失败则退出
+        }
         getchar();
 
         switch (choice) {
