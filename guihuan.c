@@ -40,8 +40,7 @@ void guihuan()
            {
             printf("你的日期格式输入错误,严格按照2026-11-01来写:");
             scanf("%s",guihuantime1);
-           }       
-           saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);
+           };  
         }
         else
         {
@@ -49,6 +48,17 @@ void guihuan()
         }  
         saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);           //写入借阅的borrow.txt文件
         updatebook1(bookname,guihuancount);
+        printf("是否需要继续归还：y/n:");
+        scanf("%c",choose2);
+        if(choose2=='y')
+        {
+            return 2;
+        }
+        else if(choose2=='n')
+        {
+            return 0;
+        }
+        
     }
 }
 
@@ -94,22 +104,12 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         strcpy(match[choose].status, "已归还");
         printf("%s在%s借的%s已全部归还\n",match[choose].peoplename,match[choose].borrowtime,match[choose].bookname);
-        printf("是否需要继续归还：y/n:");
-        scanf("%c",&choose2);
-        if(choose2=='y')
-        {
-            return 2;
-        }
-        elif(choose2=='n')
-        {
-            return 0;
-        }
         else
         {
             {
              printf("你输入的字符有误，请重新输入\n");
-             scanf("%c",&choose2)
-            }while(choose2!='y' && choose2!='n')
+             scanf("%c",&choose2);
+            }while(choose2!='y' && choose2!='n');
         }
     }
     else
