@@ -93,7 +93,7 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
         return;
     }
     fprintf(fp,"%s %s %s %s  %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
-    printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuanbooks);
+    printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuancount);
     fclose(fp);
 }
 int dateculculate(char *borrowtime,char *guihuantime)
