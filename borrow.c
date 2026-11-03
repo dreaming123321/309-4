@@ -42,13 +42,10 @@ void borrow()
            }
            printf("请输入借阅人姓名：\n");
            scanf("%s",peoplename);
+
            printf("请输入借阅人学号：\n",sid);
            scanf("%s",sid);
-           if(looksid1(sid)==1)
-           {
-            printf("你已经借过书了并且没有归还,先还书，再借书");
-            return;
-           }
+
            printf("请输入借阅日期；(格式：2026-11-01)\n");        //尽量按照这个日期格式
            scanf("%s",borrowtime);
            while(strlen(borrowtime)!=10 || borrowtime[4]!='-' || borrowtime[7]!='-')
@@ -58,8 +55,6 @@ void borrow()
            }
            strcpy(guihuantime,jisuan_guihuantime(borrowtime));        //strcpy(A,B)将B的内容复制到A中
            printf("应归还日期为：%s\n",guihuantime);
-           
-
         }
         else
         {
@@ -80,11 +75,17 @@ void borrow()
     }
  
 }
-void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)
+
+
+
+
+
+void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)      //保存借阅记录  编号+书名+借阅人学号+借阅人姓名+借阅时间+归还时间+借书数目+可借阅天数+状态+已归还的书
 {
     int havetime=0;char status[10]="未归还";int guihuancount=0;char borrowid[20]={0};
-    idcreate(borrowid,sizeof(borrowid));
-    havetime=dateculculate(borrowtime,guihuantime);
+    idcreate(borrowid,sizeof(borrowid));                                                       //生成一个索引
+    havetime=dateculculate(borrowtime,guihuantime);                                            //计算一共可借阅天数
+
     FILE *fp;
     fp=fopen("borrow.txt","a");
     if (fp==NULL)
@@ -92,11 +93,11 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
         printf("文件打开失败");
         return;
     }
-    fprintf(fp,"%s %s %s %s  %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
+    fprintf(fp,"%s %s %s %s %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
     printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuancount);
     fclose(fp);
 }
-int dateculculate(char *borrowtime,char *guihuantime)
+int dateculculate(char *borrowtime,char *guihuantime)                  //计算前后天数差的函数
 {
     int year1,month1,date1,year2,month2,date2;
     struct tm a={0};
@@ -114,6 +115,8 @@ int dateculculate(char *borrowtime,char *guihuantime)
     return (int)difftime(b1,a1)/86400;       //一天有86400秒
 
 }
+
+
 char *jisuan_guihuantime(char *borrowtime)                //规定归还时间上限是30天吧,这个函数就是dateculculate()的逆运算，传入借阅时间，返回归还时间
 {
     static  char guihuantime[100];
@@ -128,9 +131,12 @@ char *jisuan_guihuantime(char *borrowtime)                //规定归还时间�
     sprintf(guihuantime,"%04d-%02d-%02d",a.tm_year+1900,a.tm_mon+1,a.tm_mday);
     return guihuantime;
 }
+
+
 void updatebook(char *bookname,int change)   //change 为正的话代表借出去
 {
     Book b;int i=0,count=0;Book book[100];
+
     FILE *fp;
     char line[512];
     fp=fopen("book.txt","r");
@@ -153,7 +159,7 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
         i++;
         count++;
     }
-    printf("获取了%d本图书信息,对其进行更新ing...\n",count);
+    printf("对其进行更新ing...\n",count);
     fclose(fp);
     FILE *fp2;
     fp2=fopen("booktemp.txt","w");
@@ -167,16 +173,17 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
         fprintf(fp2,"%s %s %s %d %d %d\n",book[i].id,book[i].name,book[i].leibie,book[i].totalCopies,book[i].availableCopies,book[i].borrowCount);
     }
     fclose(fp2);
+
     remove("book.txt");
     printf("已删除book.txt文件\n");
     rename("booktemp.txt","book.txt");
     printf("已重命名booktemp.txt文件为book.txt文件\n");
     printf("book.txt文件已更新\n");
     return;
-  
-
 }
-int lookname(char *bookname)
+
+
+int lookname(char *bookname)                  //图书存在返回1，不存在返回0
 {
     Book b;
     FILE *fp;char line[512];
@@ -189,7 +196,7 @@ int lookname(char *bookname)
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
         sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
-          if(strcmp(b.name,bookname)==0)
+        if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
         return 1;
@@ -200,7 +207,7 @@ int lookname(char *bookname)
 }
 
 
-int lookcount(char *bookname)
+int lookcount(char *bookname)                  //图书存在返回借书数目，不存在返回0
 {
     Book b;
     FILE *fp;char line[512];
@@ -222,7 +229,7 @@ int lookcount(char *bookname)
     fclose(fp);
     return 0;
 }
-int looksid1(char *sid)
+/*int looksid1(char *sid)
 {
     Borrow b;
     FILE *fp;char line[512];
@@ -243,7 +250,7 @@ int looksid1(char *sid)
     }
     fclose(fp);
     return 0;
-}
+}*/
 
 int idcreate(char *id,size_t size)          //id 传入需要生成的id对应的变量,size_t 一种变量形式，指的是size大小
 {

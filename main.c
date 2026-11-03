@@ -7,6 +7,8 @@
 #include "add_new.h"
 #include "output.h"
 #include "search.h"
+#include "borrow.h"
+
 
 int main()
 {
@@ -44,6 +46,9 @@ int main()
                 break;
             case 5:
                 outputmenu();
+                break;
+            case 6:
+                borrow();
                 break;
             case 0:
                 printf("再见！\n");
