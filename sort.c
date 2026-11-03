@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "sort.h"
-#include "book.h" // 使用公共结构体，千万不要再自己定义一遍
+#include "book.h" 
 
 void printBooksByBorrowCount()
 {
@@ -13,25 +13,19 @@ void printBooksByBorrowCount()
         return;
     }
 
-    Book books[100]; // 假设最多100本书
+    Book books[100]; 
     int count = 0;
     char line[512];
-    int temp_borrow; // 临时接收“已经借阅”的数字
     
-    // 严格按照带中文标签的长格式读取
-        while (fgets(line, sizeof(line), fp) != NULL && count < 100)
+    // 【修改】极简空格读取法，直接按 6 个字段解析
+    while (fgets(line, sizeof(line), fp) != NULL && count < 100)
     {
         if (strlen(line) < 5) continue; // 跳过空行
         
-        // 更聪明的读取方式，不强制要求全角冒号
-        char *pName = strstr(line, "书名");
-        char *pCat = strstr(line, "类别");
-        char *pBorrow = strstr(line, "借阅次数");
-
-        if (pName && pCat && pBorrow) {
-            sscanf(pName + strlen("书名"), "%*[：:] %s", books[count].name);
-            sscanf(pCat + strlen("类别"), "%*[：:] %s", books[count].leibie);
-            sscanf(pBorrow + strlen("借阅次数"), "%*[：:] %d", &books[count].borrowCount);
+        if (sscanf(line, "%s %s %s %d %d %d", 
+                   books[count].id, books[count].name, books[count].leibie,
+                   &books[count].totalCopies, &books[count].availableCopies, &books[count].borrowCount) == 6)
+        {
             count++;
         }
     }
@@ -62,9 +56,7 @@ void printBooksByBorrowCount()
     printf("----------------------------------------------------------------------------------------\n");
     for (int i = 0; i < count; i++)
     {
-        // 已经借阅 = 总数 - 当前可借数量
         int borrowed = books[i].totalCopies - books[i].availableCopies;
-        
         printf("%-12s %-20s %-12s %-8d %-8d %-8d %-8d\n", 
                books[i].id, 
                books[i].name, 

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "add_new.h"
+#include "book.h"
 
 void add_new_book(void)
 {
@@ -10,7 +11,7 @@ void add_new_book(void)
     char leibie[50];
     int total;
     int available;
-    int borrow = 0; // 新书初始借阅次数为 0
+    int borrow = 0; // 初始借阅次数为 0
 
     // 1. 自动生成索引号
     int book_count = 0;
@@ -45,20 +46,18 @@ void add_new_book(void)
     total = atoi(totalStr); // 字符串转整数
 
     // 3. 自动计算
-    available = total; // 可借数量 = 总数量
+    available = total; // 新书可借数量 = 总数量
 
-    // 4. 写入文件
+    // 4. 写入文件（纯空格格式）
     FILE *fp_write = fopen("book.txt", "a");
     if (fp_write == NULL) {
         printf("文件打开失败！\n");
         return;
     }
 
-    // 严格按照长格式写入，并保存
-    fprintf(fp_write, "%s %s %s %d %d %d %d\n", 
-            id, name, leibie, total, 0, available, borrow);
+    // 【修改】按照纯空格短格式写入
+    fprintf(fp_write, "%s %s %s %d %d %d\n", id, name, leibie, total, available, borrow);
             
     fclose(fp_write);
-
     printf("\n添加成功！系统自动分配编号: %s\n", id);
 }
