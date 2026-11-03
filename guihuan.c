@@ -4,6 +4,7 @@
 #include "book.h"
 int looktotal(char *bookname);
 int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount);
+void updatebook1(char *bookname,int guihuancount);           
 void guihuan()
 {
     char choose;char sid[20]={0};
@@ -47,7 +48,7 @@ void guihuan()
             return;
         }  
         saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);           //写入借阅的borrow.txt文件
-        updatebook(bookname,guihuancount);
+        updatebook1(bookname,guihuancount);
     }
 }
 
@@ -97,5 +98,53 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         printf("检查书本数量，日期是否正确\n");
     }
-    return 0;
+    FILE *fp2;
+    Borrow tmp[100];int j=0;
+    char line1[512];
+    fp2=fopen("borrow.txt","r");
+    if(fp==NULL)
+    {
+        printf("文件打开失败");
+        return 0;
+    }
+    while(fgets(line1,sizeof(line1),fp)!=NULL)
+    {
+        sscanf(line1,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        
+    }
+}
+
+
+
+void updatebook1(char *bookname,int guihuancount)
+{
+    Book b;
+    FILE *fp;
+    fp=fopen("book.txt","r+");
+    if(fp==NULL)
+    {
+        printf("文件打开失败");
+        return;
+    }
+     FILE *fp2;
+    fp2=fopen("booktemp.txt","w+");
+    if(fp2==NULL)
+    {
+        printf("文件打开失败");
+        return;
+    }
+    char line[512];
+    while(fgets(line,sizeof(line),fp)!=NULL)
+    {
+        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+    if(strcmp(b.name,bookname)==0)
+    {
+        b.availableCopies+=guihuancount;
+    }
+   
+    fputs(line,fp2);
+    }
+    fclose(fp2);
+    fclose(fp);
+
 }
