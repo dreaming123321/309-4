@@ -20,13 +20,14 @@ int searchbook(void)
     int found = 0;
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
           if(strcmp(b.name,name)==0)
           {
               printf("找到书籍:\n");
               printf("ID: %s\n", b.id);
               printf("书名: %s\n", b.name);
               printf("类别: %s\n", b.leibie);
+              printf("价格: %.2f\n", b.price);
               printf("总数量: %d\n", b.totalCopies);
               printf("可借数量: %d\n", b.availableCopies);
               printf("借阅次数: %d\n", b.borrowCount);

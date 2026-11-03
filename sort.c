@@ -60,19 +60,20 @@ void printBooksByBorrowCount()
     int count = 0;     // 实际读取到的图书数量
     char line[512];    // 行缓冲区
 
-    // 逐行读取文件，按空格分隔的 6 个字段解析每条图书记录
+    // 逐行读取文件，按空格分隔的 7 个字段解析每条图书记录
     while (fgets(line, sizeof(line), fp) != NULL && count < 100)
     {
         if (strlen(line) < 5) continue; // 跳过空行或无效短行
 
-        // 使用 sscanf 按格式 "%s %s %s %d %d %d" 解析一行数据
-        if (sscanf(line, "%s %s %s %d %d %d",
+        // 使用 sscanf 按格式 "%s %s %s %f %d %d %d" 解析一行数据
+        if (sscanf(line, "%s %s %s %f %d %d %d",
                    books[count].id,           // 图书编号
                    books[count].name,         // 图书名称
                    books[count].leibie,       // 图书类别
+                   &books[count].price,       // 图书价格
                    &books[count].totalCopies, // 总数量
                    &books[count].availableCopies, // 可借数量
-                   &books[count].borrowCount) == 6) // 借阅次数
+                   &books[count].borrowCount) == 7) // 借阅次数
         {
             count++; // 解析成功，计数 +1
         }
@@ -105,12 +106,13 @@ void printBooksByBorrowCount()
     print_col("索引号", 12); printf(" ");
     print_col("书名", 24); printf(" ");
     print_col("类别", 12); printf(" ");
+    print_col("价格", 8); printf(" ");
     print_col("总数", 8); printf(" ");
     print_col("已借阅", 8); printf(" ");
     print_col("剩余", 8); printf(" ");
     print_col("借阅次数", 10);
     printf("\n");
-    printf("----------------------------------------------------------------------------------------\n");
+    printf("------------------------------------------------------------------------------------------------\n");
 
     // 逐行打印每条图书记录
     for (int i = 0; i < count; i++)
@@ -121,6 +123,9 @@ void printBooksByBorrowCount()
         print_col(books[i].id, 12); printf(" ");    // 索引号列
         print_col(books[i].name, 24); printf(" ");  // 书名列
         print_col(books[i].leibie, 12); printf(" "); // 类别列
+
+        sprintf(num_buf, "%.2f", books[i].price);
+        print_col(num_buf, 8); printf(" ");          // 价格列
 
         // 数字字段需要先 sprintf 转为字符串，再用 print_col 对齐
         sprintf(num_buf, "%d", books[i].totalCopies);

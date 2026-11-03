@@ -21,6 +21,7 @@ void add_new_book(void)
     char id[20];          // 自动生成的图书编号
     char name[100];       // 书名（用户输入）
     char leibie[50];      // 类别（用户输入）
+    float price;          // 价格（用户输入）
     int total;            // 总数量
     int available;        // 可借数量（新书 = 总数量）
     int borrow = 0;        // 借阅次数（新书初始为 0）
@@ -62,9 +63,9 @@ void add_new_book(void)
             // 逐行读取并解析每条图书记录
             while (fgets(buffer, sizeof(buffer), fp) != NULL) {
                 if (strlen(buffer) > 5) {       // 跳过空行和过短的行
-                    // 按格式解析：编号 书名 类别 总数 可借 借阅次数
-                    sscanf(buffer, "%19s %99s %49s %d %d %d",
-                           b.id, b.name, b.leibie,
+                    // 按格式解析：编号 书名 类别 价格 总数 可借 借阅次数
+                    sscanf(buffer, "%19s %99s %49s %f %d %d %d",
+                           b.id, b.name, b.leibie, &b.price,
                            &b.totalCopies, &b.availableCopies, &b.borrowCount);
                     books[count] = b;           // 存入缓存数组
 
@@ -90,8 +91,8 @@ void add_new_book(void)
             // 逐条写回（含已修改数量的那条记录）
             int i;
             for (i = 0; i < count; i++) {
-                fprintf(fp_write, "%s %s %s %d %d %d\n",
-                        books[i].id, books[i].name, books[i].leibie,
+                fprintf(fp_write, "%s %s %s %.2f %d %d %d\n",
+                        books[i].id, books[i].name, books[i].leibie, books[i].price,
                         books[i].totalCopies, books[i].availableCopies, books[i].borrowCount);
             }
             fclose(fp_write);
@@ -104,6 +105,11 @@ void add_new_book(void)
     printf("请输入类别: ");
     fgets(leibie, sizeof(leibie), stdin);      // 读取类别字符串
     leibie[strcspn(leibie, "\n")] = 0;         // 去除换行符
+
+    printf("请输入价格: ");
+    char priceStr[20];
+    fgets(priceStr, sizeof(priceStr), stdin);  // 以字符串形式读取价格
+    price = (float)atof(priceStr);             // 字符串转浮点数
 
     printf("请输入总数: ");
     char totalStr[20];
@@ -153,7 +159,7 @@ void add_new_book(void)
     }
 
     // 追加写入新图书记录
-    fprintf(fp_write, "%s %s %s %d %d %d\n", id, name, leibie, total, available, borrow);
+    fprintf(fp_write, "%s %s %s %.2f %d %d %d\n", id, name, leibie, price, total, available, borrow);
     fclose(fp_write);
     printf("\n添加成功！系统自动分配编号: %s\n", id);
 }

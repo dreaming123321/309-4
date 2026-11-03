@@ -11,6 +11,7 @@ typedef struct
     char id[20];              // 图书编号（如 XL-B001，前缀表示校区）
     char name[100];           // 图书名称
     char leibie[50];          // 图书类别（文学/计算机/科幻等）
+    float price;              // 图书价格（单位：元）
     int totalCopies;          // 图书总数量（该种书的全部馆藏本数）
     int availableCopies;      // 当前可借数量（未被借出的本数，应 ≤ totalCopies）
     int borrowCount;           // 历史借阅次数（累计被借阅的总次数，availableCopies + 已借出 >= totalCopies）
