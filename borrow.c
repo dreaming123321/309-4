@@ -58,7 +58,16 @@ void borrow()
            }
            strcpy(guihuantime,jisuan_guihuantime(borrowtime));        //strcpy(A,B)将B的内容复制到A中
            printf("应归还日期为：%s\n",guihuantime);
-           printf("是否要继续借阅：(y/n)");
+           
+
+        }
+        else
+        {
+            return;
+        }  
+        saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
+        updatebook(bookname,borrowcount);
+        printf("是否要继续借阅：(y/n)");
            scanf("%c",&choose1);
            if(choose1=='y')
            {
@@ -68,20 +77,12 @@ void borrow()
            {
             return;
            }
-
-        }
-        else
-        {
-            return;
-        }  
-        saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
-        updatebook(bookname,borrowcount);
     }
  
 }
 void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)
 {
-    int havetime=0;char status[10]="未归还";int guihuanbooks=0;char borrowid[20]={0};
+    int havetime=0;char status[10]="未归还";int guihuancount=0;char borrowid[20]={0};
     idcreate(borrowid,sizeof(borrowid));
     havetime=dateculculate(borrowtime,guihuantime);
     FILE *fp;
@@ -91,8 +92,8 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
         printf("文件打开失败");
         return;
     }
-    fprintf(fp,"%s  %s %s  %s %s %d %d %s\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
-    printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuanbooks);
+    fprintf(fp,"%s %s %s %s  %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
+    printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuancount);
     fclose(fp);
 }
 int dateculculate(char *borrowtime,char *guihuantime)
@@ -233,7 +234,7 @@ int looksid1(char *sid)
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        sscanf(line,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
         if(strcmp(b.sid,sid)==0 && strcmp(b.status,"未归还")==0)
     {
         fclose(fp);
@@ -263,7 +264,7 @@ int idcreate(char *id,size_t size)          //id 传入需要生成的id对应�
         }
     }
     fclose(fp);
-    sprintf(id,size,"L%06d",max+1);
+    snprintf(id,size,"L%06d",max+1);
     return 1;
 }
 

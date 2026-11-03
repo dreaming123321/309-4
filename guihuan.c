@@ -24,8 +24,8 @@ void guihuan()
     else
     {
         printf("确定你要归还%s\n",bookname);
-        printf("是否归还?(y/n):\n ");
-        scanf("%c", &choose);
+        printf("是否归还?(y/n):\n");
+        scanf(" %c", &choose);
         if(choose=='y')           //字符串用双引号，单个字符用单引号
         {
            printf("请输入归还数量：\n");
@@ -40,8 +40,7 @@ void guihuan()
            {
             printf("你的日期格式输入错误,严格按照2026-11-01来写:");
             scanf("%s",guihuantime1);
-           }       
-           saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);
+           };  
         }
         else
         {
@@ -49,11 +48,24 @@ void guihuan()
         }  
         saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);           //写入借阅的borrow.txt文件
         updatebook1(bookname,guihuancount);
+        char choose2;
+        printf("是否需要继续归还：y/n:");
+        scanf("%c",&choose2);
+        if(choose2=='y')
+        {
+            guihuan();
+        }
+        else if(choose2=='n')
+        {
+            return;
+        }
+        
     }
 }
 
 int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount)
 {
+    char choose2;
     Borrow b;Borrow match[100];int count=0;int i=0;int choose;
     FILE *fp;char line[512];
     fp=fopen("borrow.txt","r+");
@@ -64,7 +76,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        sscanf(line,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
         if(strcmp(b.sid,sid)==0 && strcmp(b.bookname,bookname)==0 && strcmp(b.status,"未归还")==0)
     {
         match[count]=b;
@@ -79,12 +91,12 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     }
     printf("请输入你要归还的记录序号：\n");
     
-    scanf("%d",&choose);
+    scanf(" %d",&choose);
     while(choose<1 || choose>count)
     {
         printf("你输入的序号有误，请重新输入\n");
         printf("请输入你要归还的记录序号：\n");
-        scanf("%d",&choose);
+        scanf(" %d",&choose);
     } 
     choose--;
     fclose(fp);
@@ -94,15 +106,19 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         strcpy(match[choose].status, "已归还");
         printf("%s在%s借的%s已全部归还\n",match[choose].peoplename,match[choose].borrowtime,match[choose].bookname);
     }
-    else
+    else if(match[choose].borrowcount<0)
     {
         printf("检查书本数量，日期是否正确\n");
     }
+    else
+{
+    printf("还有一些没有归还\n");
+}
     FILE *fp2;
     Borrow tmp[100];int j=0;
     char line1[512];
     fp2=fopen("borrow.txt","r");
-    if(fp==NULL)
+    if(fp2==NULL)
     {
         printf("文件打开失败");
         return 0;
