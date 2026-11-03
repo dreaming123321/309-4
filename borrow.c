@@ -251,7 +251,7 @@ int idcreate(char *id,size_t size)          //id 传入需要生成的id对应�
     if(fp==NULL)
     {
         printf("文件打开失败");
-        return NULL;
+        return 0;
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
@@ -262,7 +262,8 @@ int idcreate(char *id,size_t size)          //id 传入需要生成的id对应�
             max=num;
         }
     }
-    sprintf(id,sizeof(id),"L%06d",max+1);
+    fclose(fp);
+    sprintf(id,size,"L%06d",max+1);
     return 1;
 }
 
