@@ -30,7 +30,7 @@ int outputmenu(void)
         line[strcspn(line, "\r\n")] = '\0';
         fprintf(outputFile, "%s", line);
         if (strncmp(id, "XL", 2) == 0)
-            fprintf(outputFile, "仙林");
+            fprintf(outputFile, " 仙林");
 
         fprintf(outputFile, "\n");
     }
