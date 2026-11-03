@@ -182,7 +182,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     }
     for (i=0;i<j;i++)
     {
-        fprintf(fp3,"%s %s %s %s %s %s %d %d %s\n",tmp[i].borrowid,tmp[i].bookname,tmp[i].sid,tmp[i].peoplename,tmp[i].borrowtime,tmp[i].guihuantime,tmp[i].havetime,tmp[i].borrowcount,tmp[i].status);
+        fprintf(fp3,"%s %s %s %s %s %s %d %d %s\n",tmp[i].borrowid,tmp[i].bookname,tmp[i].sid,tmp[i].peoplename,tmp[i].borrowtime,tmp[i].guihuantime,tmp[i].borrowcount,tmp[i].havetime,tmp[i].status);
     }
     fclose(fp3);
     remove("borrow.txt");
