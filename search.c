@@ -16,7 +16,9 @@ int searchbook(void)
         printf("文件打开失败");
         return 0;
     }
-    if(fgets(line,sizeof(line),fp)!=NULL)
+
+    int found = 0;
+    while(fgets(line,sizeof(line),fp)!=NULL)
     {
         sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
           if(strcmp(b.name,name)==0)
@@ -28,8 +30,16 @@ int searchbook(void)
               printf("总数量: %d\n", b.totalCopies);
               printf("可借数量: %d\n", b.availableCopies);
               printf("借阅次数: %d\n", b.borrowCount);
+              found = 1;
+              break;
           }
     }
+
+    fclose(fp);
+
+    if(!found)
+        printf("未找到书籍: %s\n", name);
+
     return 0;
 }
 

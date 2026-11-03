@@ -5,6 +5,8 @@
 #include "book.h"
 #include "add_new.h"
 #include "output.h"
+#include "search.h"
+
 int main()
 {
     
