@@ -6,7 +6,7 @@
 int looktotal(char *bookname);
 void guihuan()
 {
-    char choose;
+    char choose;char sid[20];
     char bookname[100]; int borrowcount; char peoplename[100];char borrowtime[15];char guihuantime[100];
     printf("请输入归还书名：");
     scanf("%s", bookname);
@@ -23,7 +23,7 @@ void guihuan()
     else
     {
         printf("确定你要归还%s\n",bookname);
-        printf("是否归还?(y/n): ");
+        printf("是否归还?(y/n):\n ");
         scanf("%c", &choose);
         if(choose=='y')           //字符串用双引号，单个字符用单引号
         {
@@ -45,7 +45,7 @@ void guihuan()
         {
             return;
         }  
-        saveborrow(bookname,peoplename,borrowtime,guihuantime);           //写入借阅的borrow.txt文件
+        saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
         updatebook(bookname,borrowcount);
     }
  

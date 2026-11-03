@@ -20,7 +20,7 @@ typedef struct
     char guihuantime[15];         //归还时间
     int borrowcount;            //借阅数量
     int havetime;               //持有时间
-    
+    char status[10];             //状态“已归还”“未归还”“未完全归还”
 }Borrow;
 
 
