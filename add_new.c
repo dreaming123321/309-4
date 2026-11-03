@@ -55,6 +55,19 @@ void add_new_book(void)
         return;
     }
 
+    // 如果文件非空且末尾没有换行，先补一个换行，防止追加到同一行
+    fseek(fp_write, 0, SEEK_END);
+    long fsize = ftell(fp_write);
+    if (fsize > 0) {
+        fseek(fp_write, -1, SEEK_END);
+        char last;
+        fread(&last, 1, 1, fp_write);
+        if (last != '\n') {
+            fseek(fp_write, 0, SEEK_END);
+            fprintf(fp_write, "\n");
+        }
+    }
+
     // 【修改】按照纯空格短格式写入
     fprintf(fp_write, "%s %s %s %d %d %d\n", id, name, leibie, total, available, borrow);
             

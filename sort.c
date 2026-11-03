@@ -4,6 +4,28 @@
 #include "sort.h"
 #include "book.h" 
 
+static int disp_width(const char *str)
+{
+    int w = 0;
+    while (*str) {
+        if ((*str & 0x80) == 0) {
+            w++;
+            str++;
+        } else {
+            w += 2;
+            while ((*++str & 0xC0) == 0x80);
+        }
+    }
+    return w;
+}
+
+static void print_col(const char *str, int width)
+{
+    int w = disp_width(str);
+    printf("%s", str);
+    for (int i = w; i < width; i++) printf(" ");
+}
+
 void printBooksByBorrowCount()
 {
     FILE *fp = fopen("book.txt", "r");
@@ -51,19 +73,26 @@ void printBooksByBorrowCount()
         }
     }
 
-    // 打印结果：包含索引号、书名、类别、总数、已借阅、剩余、借阅次数
-    printf("%-12s %-20s %-12s %-8s %-8s %-8s %-8s\n", "索引号", "书名", "类别", "总数", "已借阅", "剩余", "借阅次数");
+    print_col("索引号", 12); printf(" ");
+    print_col("书名", 24); printf(" ");
+    print_col("类别", 12); printf(" ");
+    print_col("总数", 8); printf(" ");
+    print_col("已借阅", 8); printf(" ");
+    print_col("剩余", 8); printf(" ");
+    print_col("借阅次数", 10);
+    printf("\n");
     printf("----------------------------------------------------------------------------------------\n");
     for (int i = 0; i < count; i++)
     {
         int borrowed = books[i].totalCopies - books[i].availableCopies;
-        printf("%-12s %-20s %-12s %-8d %-8d %-8d %-8d\n", 
-               books[i].id, 
-               books[i].name, 
-               books[i].leibie, 
-               books[i].totalCopies, 
-               borrowed, 
-               books[i].availableCopies, 
-               books[i].borrowCount);
+        char num_buf[20];
+        print_col(books[i].id, 12); printf(" ");
+        print_col(books[i].name, 24); printf(" ");
+        print_col(books[i].leibie, 12); printf(" ");
+        sprintf(num_buf, "%d", books[i].totalCopies); print_col(num_buf, 8); printf(" ");
+        sprintf(num_buf, "%d", borrowed); print_col(num_buf, 8); printf(" ");
+        sprintf(num_buf, "%d", books[i].availableCopies); print_col(num_buf, 8); printf(" ");
+        sprintf(num_buf, "%d", books[i].borrowCount); print_col(num_buf, 10);
+        printf("\n");
     }
 }
