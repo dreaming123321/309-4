@@ -48,15 +48,16 @@ void guihuan()
         }  
         saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);           //写入借阅的borrow.txt文件
         updatebook1(bookname,guihuancount);
+        char choose2;
         printf("是否需要继续归还：y/n:");
-        scanf("%c",choose2);
+        scanf("%c",&choose2);
         if(choose2=='y')
         {
-            return 2;
+            guihuan();
         }
         else if(choose2=='n')
         {
-            return 0;
+            return;
         }
         
     }
@@ -104,18 +105,15 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         strcpy(match[choose].status, "已归还");
         printf("%s在%s借的%s已全部归还\n",match[choose].peoplename,match[choose].borrowtime,match[choose].bookname);
-        else
-        {
-            {
-             printf("你输入的字符有误，请重新输入\n");
-             scanf("%c",&choose2);
-            }while(choose2!='y' && choose2!='n');
-        }
     }
-    else
+    else if(match[choose].borrowcount<0)
     {
         printf("检查书本数量，日期是否正确\n");
     }
+    else
+{
+    printf("还有一些没有归还\n");
+}
     FILE *fp2;
     Borrow tmp[100];int j=0;
     char line1[512];

@@ -92,7 +92,7 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
         printf("文件打开失败");
         return;
     }
-    fprintf(fp,"%s %s  %s %s  %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
+    fprintf(fp,"%s %s %s %s  %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
     printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuanbooks);
     fclose(fp);
 }
@@ -234,7 +234,7 @@ int looksid1(char *sid)
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        sscanf(line,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
         if(strcmp(b.sid,sid)==0 && strcmp(b.status,"未归还")==0)
     {
         fclose(fp);
