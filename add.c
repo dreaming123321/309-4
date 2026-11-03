@@ -17,7 +17,7 @@ int addbook(void)
     printf("请输入数量：");
     scanf("%d", &count);
     FILE *fp = fopen("book.txt", "a");
-    fprintf(fp, "\n%s,%s,%d\n", name, leibie, count);
+    fprintf(fp, "\n%s %s %d\n", name, leibie, count);
     fclose(fp);
     printf("添加成功！\n");
     return 0;
