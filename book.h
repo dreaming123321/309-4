@@ -13,6 +13,7 @@ typedef struct
 
 typedef struct 
 {
+    char borrowid[20];         //借阅的唯一编号
     char bookname[100];          //书名
     char sid[20];               //学号
     char peoplename[100];          //姓名
@@ -21,6 +22,7 @@ typedef struct
     int borrowcount;            //借阅数量
     int havetime;               //持有时间
     char status[10];             //状态“已归还”“未归还”“未完全归还”
+    char guihuanbooks;         //已经归还的书
 }Borrow;
 
 
