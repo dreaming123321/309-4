@@ -11,4 +11,17 @@ typedef struct
     int borrowCount;     // 历史借阅次数
 } Book;
 
+typedef struct 
+{
+    char bookname[100];          //书名
+    char sid[20];               //学号
+    char peoplename[100];          //姓名
+    char borrowtime[15];           //借书时间
+    char guihuantime[15];         //归还时间
+    int borrowcount;            //借阅数量
+    int havetime;               //持有时间
+    
+}Borrow;
+
+
 #endif

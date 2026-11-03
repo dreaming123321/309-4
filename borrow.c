@@ -6,13 +6,13 @@
 int lookname(char *bookname);  //这个函数专门根据书名查是否有这本书，如果有，返回1，如果没有，返回0
 int lookcount(char *bookname);  //这个函数专门根据书名查这本书的可借数量，如果有，返回数量，如果没有，返回0
 void updatebook(char *bookname,int change);        //功能：这个是修改book.txt文件
-void saveborrow(char *bookname,char *peoplename,char *borrowtime,char *guihuantime);      //保存借阅记录的函数
+void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount);      //保存借阅记录的函数
 int dateculculate(char *borrowtime,char *guihuantime);  //传入起始时间和最终时间，这个函数可以计算出经过的天数
 char *jisuan_guihuantime(char *borrowtime);  //这个函数是根据借阅时间计算归还时间，归还时间是借阅时间加上30天
 void borrow()
 {
     char choose;
-    char bookname[100]; int borrowcount; char peoplename[100];char borrowtime[15];char guihuantime[100];
+    char bookname[100]; int borrowcount; char peoplename[100];char borrowtime[15];char guihuantime[100];char sid[20];
     printf("请输入借阅书名：");
     scanf("%s", bookname);
     if(lookname(bookname)==0)
@@ -36,6 +36,8 @@ void borrow()
            scanf("%d",&borrowcount);
            printf("请输入借阅人姓名：\n");
            scanf("%s",peoplename);
+           printf("请输入借阅人学号：%s\n",sid);
+           scanf("%s",sid);
            printf("请输入借阅日期；(格式：2026-11-01)\n");        //尽量按照这个日期格式
            scanf("%s",borrowtime);
            while(strlen(borrowtime)!=10 || borrowtime[4]!='-' || borrowtime[7]!='-')
@@ -44,18 +46,18 @@ void borrow()
             scanf("%s",borrowtime);
            }
            strcpy(guihuantime,jisuan_guihuantime(borrowtime));        //strcpy(A,B)将B的内容复制到A中
-           printf("归还日期为：%s\n",guihuantime);
+           printf("应归还日期为：%s\n",guihuantime);
         }
         else
         {
             return;
         }  
-        saveborrow(bookname,peoplename,borrowtime,guihuantime);           //写入借阅的borrow.txt文件
+        saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
         updatebook(bookname,borrowcount);
     }
  
 }
-void saveborrow(char *bookname,char *peoplename,char *borrowtime,char *guihuantime)
+void saveborrow(char *bookname,char *peoplename,char *sid,char *borrowtime,char *guihuantime,int borrowcount)
 {
     int havetime=0;
     havetime=dateculculate(borrowtime,guihuantime);
@@ -66,8 +68,8 @@ void saveborrow(char *bookname,char *peoplename,char *borrowtime,char *guihuanti
         printf("文件打开失败");
         return;
     }
-    fprintf(fp,"%s  %s  %s %s %d\n",bookname,peoplename,borrowtime,guihuantime,havetime);
-    printf("已保存借阅记录：%s  %s  %s %s %d\n",bookname,peoplename,borrowtime,guihuantime,havetime);
+    fprintf(fp,"%s  %s %s  %s %s %d  %d\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime);
+    printf("已保存借阅记录：书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天\n",bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime);
     fclose(fp);
 }
 int dateculculate(char *borrowtime,char *guihuantime)
@@ -196,5 +198,28 @@ int lookcount(char *bookname)
     fclose(fp);
     return 0;
 }
+int lookcount1(char *bookname)
+{
+    Borrow b;
+    FILE *fp;char line[512];
+    fp=fopen("borrow.txt","r");
+    if(fp==NULL)
+    {
+        printf("文件打开失败");
+        return 0;
+    }
+    while(fgets(line,sizeof(line),fp)!=NULL)
+    {
+        sscanf(line,"%99s %19s %99s %14s %14s %d %d",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.havetime);
+        if(strcmp(b.bookname,bookname)==0)
+    {
+        fclose(fp);
+        return b.borrowcount;
+    }
+    }
+    fclose(fp);
+    return 0;
+}
+
 
 
