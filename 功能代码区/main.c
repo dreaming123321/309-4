@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-#include <string.h>
 #include "sort.h"
 #include "delete.h"
 #include "book.h"
@@ -16,30 +15,8 @@
 #include "borrow.h"
 #include "guihuan.h"
 #include "remind.h"
+#include "guess.h"
 
-
-// 等待输入时也检查跨日；读写文件时使用同一把锁。
-static HANDLE stopRefresh;
-static char startdate[15];
-static DWORD WINAPI refreshdate(LPVOID unused)
-{
-    char lastdate[15]; (void)unused;
-    lockdata();
-    strcpy(lastdate,startdate);
-    unlockdata();
-    while (WaitForSingleObject(stopRefresh,1000)==WAIT_TIMEOUT)
-    {
-        lockdata();
-        if (strcmp(lastdate,todayis()))
-        {
-            char newdate[15]; strcpy(newdate,todayis());
-            if (remindat(newdate))
-            { strcpy(lastdate,newdate); printf("\n日期已变化，借阅提醒和历史记录已更新。\n"); fflush(stdout); }
-        }
-        unlockdata();
-    }
-    return 0;
-}
 
 // 程序主入口
 // 显示菜单 → 接收用户选择 → 调用对应模块函数，0 退出循环。
@@ -49,19 +26,10 @@ int main()
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
     int choice; // 用户菜单选择
-    HANDLE refreshThread;
-    if (!recoverborrow()) return 1;
-    strcpy(startdate,todayis());
     remind();
-    stopRefresh=CreateEventA(NULL,TRUE,FALSE,NULL);
-    refreshThread=stopRefresh ? CreateThread(NULL,0,refreshdate,NULL,0,NULL) : NULL;
-    if (!refreshThread) { printf("自动跨日刷新启动失败，请重新运行程序。\n"); if (stopRefresh) CloseHandle(stopRefresh); return 1; }
 
     // 主循环：反复显示菜单直到用户选择退出
     do {
-        lockdata();
-        if (!recoverborrow()) { unlockdata(); break; }
-        unlockdata();
         // 打印功能菜单
         printf("\n========== 图书管理系统 ==========\n");
         printf("1. 添加新书\n");
@@ -72,6 +40,7 @@ int main()
         printf("6. 借阅图书\n");
         printf("7. 归还图书\n");
         printf("8. 查看归还提醒列表\n");
+        printf("9. AI玩家猜数字游戏\n");
         printf("0. 退出\n");
         printf("==================================\n");
 
@@ -106,9 +75,10 @@ int main()
                 guihuan();               // 归还图书
                 break;
             case 8:
-                lockdata();
                 remindlook();                   // 查看归还提醒列表
-                unlockdata();
+                break;
+            case 9:
+                ai_guess_number();       // AI玩家猜数字游戏
                 break;
             case 0:
                 printf("再见！\n");       // 退出程序
@@ -119,7 +89,5 @@ int main()
         }
     } while (choice != 0); // 选择 0 时退出循环
 
-    if (refreshThread) { SetEvent(stopRefresh); WaitForSingleObject(refreshThread,INFINITE); CloseHandle(refreshThread); }
-    if (stopRefresh) CloseHandle(stopRefresh);
     return 0;
 }
