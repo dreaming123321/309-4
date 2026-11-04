@@ -38,6 +38,11 @@ void guihuan()
             printf("请输入归还数量：\n");
             scanf(" %d",&guihuancount);
            }
+           while(guihuancount<0)
+           {
+            printf("输入数字有误,请重新输入：\n");
+            scanf(" %d",&guihuancount);
+           }
            printf("请输入归还人姓名：\n");
            scanf(" %s",peoplename);
            printf("请输入归还人学号：\n");
@@ -153,7 +158,6 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
 
     else if(count==1)
     {
-    fclose(fp);
     match[0].borrowcount-=guihuancount;
     if(match[0].borrowcount==0)
     {
@@ -176,7 +180,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         printf("没有匹配的记录\n");
     }
-
+    fclose(fp);
     FILE *fp3;
     fp3=fopen("borrowtemp.txt","w+");
     if(fp3==NULL)
