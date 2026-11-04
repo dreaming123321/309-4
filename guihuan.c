@@ -215,13 +215,13 @@ void updatebook1(char *bookname,int guihuancount)
     char line[512];
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %.2f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
     if(strcmp(b.name,bookname)==0)
     {
         b.availableCopies+=guihuancount;
     }
    
-    fprintf(fp2,"%s %s %s %f %d %d %d\n",b.id,b.name,b.leibie,b.price,b.totalCopies,b.availableCopies,b.borrowCount);
+    fprintf(fp2,"%s %s %s %.2f %d %d %d\n",b.id,b.name,b.leibie,b.price,b.totalCopies,b.availableCopies,b.borrowCount);
     }
     fclose(fp2);
     fclose(fp);
@@ -243,7 +243,7 @@ int looktotal(char *bookname)                 //输出正在借阅的书的数�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %.2f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
