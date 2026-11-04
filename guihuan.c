@@ -38,7 +38,7 @@ void guihuan()
             printf("请输入归还数量：\n");
             scanf(" %d",&guihuancount);
            }
-           while(guihuancount<0)
+           while(guihuancount<=0)
            {
             printf("输入数字有误,请重新输入：\n");
             scanf(" %d",&guihuancount);
@@ -59,8 +59,16 @@ void guihuan()
         {
             return;
         }  
-        saveguihuan(bookname,sid,peoplename,guihuantime1,guihuancount);           //写入借阅的borrow.txt文件
-        updatebook1(bookname,guihuancount);
+        if(saveguihuan(bookname,sid,peoplename,
+               guihuantime1,guihuancount)==1)
+{
+    updatebook1(bookname,guihuancount);
+}
+else
+{
+    printf("归还失败，库存未更新！\n");
+    return;
+}
         char choose2;
         printf("是否需要继续归还：y/n:");
         scanf(" %c",&choose2);
@@ -219,7 +227,7 @@ void updatebook1(char *bookname,int guihuancount)
     char line[512];
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %.2f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
     if(strcmp(b.name,bookname)==0)
     {
         b.availableCopies+=guihuancount;
@@ -247,7 +255,7 @@ int looktotal(char *bookname)                 //输出正在借阅的书的数�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %.2f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
