@@ -109,8 +109,8 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         match[count]=b;
         match[count].havetime=dateculculate(b.borrowtime,guihuantime1);
-        count++;
         matchIndex[count]=originalindex;
+         count++;
     }
       originalindex++;
     }
@@ -142,6 +142,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     else if(match[choose].borrowcount<0)
     {
         printf("检查书本数量，日期是否正确\n");
+        return 0;
     }
     else
     {
@@ -163,6 +164,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     else if(match[0].borrowcount<0)
     {
         printf("检查书本数量，日期是否正确\n");
+        return 0;
     }
     else
    {
