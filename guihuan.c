@@ -78,7 +78,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     int count=0;int i=0;int choose;
 
     FILE *fp2;
-    Borrow tmp[100];int j=0;
+    Borrow tmp[100];int j=0;int matchIndex[100];int originalindex=0;
     char line1[512];
     fp2=fopen("borrow.txt","r");
     if(fp2==NULL)
@@ -110,7 +110,9 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         match[count]=b;
         match[count].havetime=dateculculate(b.borrowtime,guihuantime1);
         count++;
+        matchIndex[count]=originalindex;
     }
+      originalindex++;
     }
 
     if (count>1)
@@ -130,8 +132,6 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         scanf(" %d",&choose);
     } 
     choose--;
-
-    fclose(fp);
     match[choose].borrowcount-=guihuancount;
     if(match[choose].borrowcount==0)
     {
@@ -147,7 +147,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
     printf("还有一些没有归还\n");
     }
-    tmp[choose]=match[choose];
+    tmp[matchIndex[choose]]=match[choose];
     }
 
     else if(count==1)
@@ -168,7 +168,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
    {
     printf("还有一些没有归还\n");
    }
-   tmp[0]=match[0];
+   tmp[matchIndex[0]]=match[0];
     }
     else
     {
