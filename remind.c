@@ -7,6 +7,8 @@
 int timecha(char *guihuantime1);
 char *todayis();
 void remind();
+void remindlook();
+
 void remindlook()
 {
     Borrow b;

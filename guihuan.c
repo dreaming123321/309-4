@@ -137,6 +137,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         strcpy(match[choose].status, "已归还");
         printf("%s在%s借的%s已全部归还\n",match[choose].peoplename,match[choose].borrowtime,match[choose].bookname);
+        guihuanrcheck(match[choose]);
     }
     else if(match[choose].borrowcount<0)
     {
@@ -157,6 +158,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
     {
         strcpy(match[0].status, "已归还");
         printf("%s在%s借的%s已全部归还\n",match[0].peoplename,match[0].borrowtime,match[0].bookname);
+        guihuanrcheck(match[0]);
     }
     else if(match[0].borrowcount<0)
     {
@@ -248,6 +250,48 @@ int looktotal(char *bookname)                 //输出正在借阅的书的数�
     }
     fclose(fp);
     return 0;
+}
+
+
+void guihuanrcheck(Borrow a)
+{
+    Borrow b;
+    FILE *fp;
+    Borrow tmp[100];int j=0;
+    char line1[512];
+    fp=fopen("remind.txt","r");
+    if(fp==NULL)
+    {
+        printf("文件打开失败");
+        return;
+    }
+    while(fgets(line1,sizeof(line1),fp)!=NULL)
+    {
+        sscanf(line1,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        if(strcmp(a.borrowid,b.borrowid)==0)
+        {}
+        else
+        {
+            tmp[j]=b;
+            j++;
+        }
+    }
+    fclose(fp);
+
+    int i=0;
+    FILE *fp2;
+    fp2=fopen("remind.txt","w+");
+    if(fp2==NULL)
+    {
+        printf("文件打开失败");
+        return;
+    }
+    for (i=0;i<j;i++)
+    {
+        fprintf(fp2,"%s %s %s %s %s %s %d %d %s\n",tmp[i].borrowid,tmp[i].bookname,tmp[i].sid,tmp[i].peoplename,tmp[i].borrowtime,tmp[i].guihuantime,tmp[i].borrowcount,tmp[i].havetime,tmp[i].status);
+    }
+    fclose(fp2);
+
 }
 
 
