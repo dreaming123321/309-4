@@ -6,7 +6,7 @@
 int lookname(char *bookname);  //这个函数专门根据书名查是否有这本书，如果有，返回1，如果没有，返回0
 int lookcount(char *bookname);  //这个函数专门根据书名查这本书的可借数量，如果有，返回数量，如果没有，返回0
 void updatebook(char *bookname,int change);        //功能：这个是修改book.txt文件
-void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount);      //保存借阅记录的函数
+int saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount);      //保存借阅记录的函数
 int dateculculate(char *borrowtime,char *guihuantime);  //传入起始时间和最终时间，这个函数可以计算出经过的天数
 char *jisuan_guihuantime(char *borrowtime);  //这个函数是根据借阅时间计算归还时间，归还时间是借阅时间加上30天
 int idcreate(char *id,size_t size);                         //自动生成借阅编号
@@ -60,8 +60,16 @@ void borrow()
         {
             return;
         }  
-        saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
-        updatebook(bookname,borrowcount);
+        if(saveborrow(bookname,sid,peoplename,
+               borrowtime,guihuantime,borrowcount)==1)
+{
+    updatebook1(bookname,borrowcount);
+}
+else
+{
+    printf("归还失败，库存未更新！\n");
+    return;
+}
         printf("是否要继续借阅：(y/n):\n");
            scanf(" %c",&choose1);
            if(choose1=='y')
@@ -80,7 +88,7 @@ void borrow()
 
 
 
-void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)      //保存借阅记录  编号+书名+借阅人学号+借阅人姓名+借阅时间+归还时间+借书数目+可借阅天数+状态+已归还的书
+int saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char *guihuantime,int borrowcount)      //保存借阅记录  编号+书名+借阅人学号+借阅人姓名+借阅时间+归还时间+借书数目+可借阅天数+状态+已归还的书
 {
     int havetime=0;char status[10]="未归还";int guihuancount=0;char borrowid[20]={0};
     idcreate(borrowid,sizeof(borrowid));                                                       //生成一个索引
@@ -91,11 +99,12 @@ void saveborrow(char *bookname,char *sid,char *peoplename,char *borrowtime,char 
     if (fp==NULL)
     {
         printf("文件打开失败");
-        return;
+        return 0;
     }
     fprintf(fp,"%s %s %s %s %s %s %d %d %s\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status);
     printf("已保存借阅记录：借阅编号：%s 书名：%s  借阅人学号：%s  借阅人姓名：%s 借阅时间：%s 归还时间：%s 借书数目：%d 可借阅%d天 状态:%s 已归还的书：%d本\n",borrowid,bookname,sid,peoplename,borrowtime,guihuantime,borrowcount,havetime,status,guihuancount);
     fclose(fp);
+    return 1;
 }
 int dateculculate(char *borrowtime,char *guihuantime)                  //计算前后天数差的函数
 {
