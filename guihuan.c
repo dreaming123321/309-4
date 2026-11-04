@@ -249,7 +249,3 @@ int looktotal(char *bookname)                 //输出正在借阅的书的数�
     fclose(fp);
     return 0;
 }
-
-
-
- 
