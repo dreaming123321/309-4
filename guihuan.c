@@ -2,15 +2,17 @@
 #include "borrow.h"
 #include <string.h>          
 #include "book.h"
-int looktotal(char *bookname);
-int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount);
-void updatebook1(char *bookname,int guihuancount);           
+int looktotal(char *bookname);                       //输出正在借阅的书的数量
+int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount);      //保存归还信息
+void updatebook1(char *bookname,int guihuancount);                                                  //更新book.txt文件
+
+
 void guihuan()
 {
     char choose;char sid[20]={0};
     char bookname[100]; int guihuancount; char peoplename[100];char guihuantime1[15];
     printf("请输入归还书名：");
-    scanf("%s", bookname);
+    scanf(" %s", bookname);
     if(lookname(bookname)==0)
     {
         printf("该书不是我们这里的书,不要归还\n");
@@ -29,17 +31,23 @@ void guihuan()
         if(choose=='y')           //字符串用双引号，单个字符用单引号
         {
            printf("请输入归还数量：\n");
-           scanf("%d",&guihuancount);
+           scanf(" %d",&guihuancount);
+           while(guihuancount>looktotal(bookname))
+           {
+            printf("你归还的太多了，检查一下是不是多还了\n");
+            printf("请输入归还数量：\n");
+            scanf(" %d",&guihuancount);
+           }
            printf("请输入归还人姓名：\n");
-           scanf("%s",peoplename);
+           scanf(" %s",peoplename);
            printf("请输入归还人学号：\n");
-           scanf("%s",sid);
+           scanf(" %s",sid);
            printf("请输入归还日期；(格式:2026-11-01)\n");        //尽量按照这个日期格式
-           scanf("%s",guihuantime1);
+           scanf(" %s",guihuantime1);
            while(strlen(guihuantime1)!=10 || guihuantime1[4]!='-' || guihuantime1[7]!='-')
            {
             printf("你的日期格式输入错误,严格按照2026-11-01来写:");
-            scanf("%s",guihuantime1);
+            scanf(" %s",guihuantime1);
            };  
         }
         else
@@ -50,7 +58,7 @@ void guihuan()
         updatebook1(bookname,guihuancount);
         char choose2;
         printf("是否需要继续归还：y/n:");
-        scanf("%c",&choose2);
+        scanf(" %c",&choose2);
         if(choose2=='y')
         {
             guihuan();
@@ -63,10 +71,29 @@ void guihuan()
     }
 }
 
-int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount)
+
+int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount)     //保存归还信息
 {
-    char choose2;
-    Borrow b;Borrow match[100];int count=0;int i=0;int choose;
+    Borrow b;  Borrow match[100];
+    int count=0;int i=0;int choose;
+
+    FILE *fp2;
+    Borrow tmp[100];int j=0;
+    char line1[512];
+    fp2=fopen("borrow.txt","r");
+    if(fp2==NULL)
+    {
+        printf("文件打开失败");
+        return 0;
+    }
+    while(fgets(line1,sizeof(line1),fp2)!=NULL)
+    {
+        sscanf(line1,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        tmp[j]=b;
+        j++;
+    }
+    fclose(fp2);
+
     FILE *fp;char line[512];
     fp=fopen("borrow.txt","r+");
     if(fp==NULL)
@@ -74,6 +101,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         printf("文件打开失败");
         return 0;
     }
+
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
         sscanf(line,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
@@ -84,6 +112,9 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         count++;
     }
     }
+
+    if (count>1)
+    {
     printf("你有多次的记录与这个要归还的书匹配，选择一个进行归还：\n");
     for (i=0;i<count;i++)
     {
@@ -99,6 +130,7 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         scanf(" %d",&choose);
     } 
     choose--;
+
     fclose(fp);
     match[choose].borrowcount-=guihuancount;
     if(match[choose].borrowcount==0)
@@ -111,23 +143,50 @@ int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int
         printf("检查书本数量，日期是否正确\n");
     }
     else
-{
+    {
     printf("还有一些没有归还\n");
-}
-    FILE *fp2;
-    Borrow tmp[100];int j=0;
-    char line1[512];
-    fp2=fopen("borrow.txt","r");
-    if(fp2==NULL)
+    }
+    tmp[choose]=match[choose];
+    }
+
+    else if(count==1)
+    {
+    fclose(fp);
+    match[0].borrowcount-=guihuancount;
+    if(match[0].borrowcount==0)
+    {
+        strcpy(match[0].status, "已归还");
+        printf("%s在%s借的%s已全部归还\n",match[0].peoplename,match[0].borrowtime,match[0].bookname);
+    }
+    else if(match[0].borrowcount<0)
+    {
+        printf("检查书本数量，日期是否正确\n");
+    }
+    else
+   {
+    printf("还有一些没有归还\n");
+   }
+   tmp[0]=match[0];
+    }
+    else
+    {
+        printf("没有匹配的记录\n");
+    }
+
+    FILE *fp3;
+    fp3=fopen("borrowtemp.txt","w+");
+    if(fp3==NULL)
     {
         printf("文件打开失败");
         return 0;
     }
-    while(fgets(line1,sizeof(line1),fp)!=NULL)
+    for (i=0;i<j;i++)
     {
-        sscanf(line1,"%99s %19s %99s %14s %14s %d %d %9s",b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
-        
+        fprintf(fp3,"%s %s %s %s %s %s %d %d %s\n",tmp[i].borrowid,tmp[i].bookname,tmp[i].sid,tmp[i].peoplename,tmp[i].borrowtime,tmp[i].guihuantime,tmp[i].borrowcount,tmp[i].havetime,tmp[i].status);
     }
+    fclose(fp3);
+    remove("borrow.txt");
+    rename("borrowtemp.txt","borrow.txt");
 }
 
 
@@ -152,15 +211,45 @@ void updatebook1(char *bookname,int guihuancount)
     char line[512];
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
     if(strcmp(b.name,bookname)==0)
     {
         b.availableCopies+=guihuancount;
     }
    
-    fputs(line,fp2);
+    fprintf(fp2,"%s %s %s %f %d %d %d\n",b.id,b.name,b.leibie,b.price,b.totalCopies,b.availableCopies,b.borrowCount);
     }
     fclose(fp2);
     fclose(fp);
-
+    remove("book.txt");
+    rename("booktemp.txt","book.txt");
 }
+
+
+
+int looktotal(char *bookname)                 //输出正在借阅的书的数量
+{
+    Book b;
+    FILE *fp;char line[512];
+    fp=fopen("book.txt","r");
+    if(fp==NULL)
+    {
+        printf("文件打开失败");
+        return 0;
+    }
+    while(fgets(line,sizeof(line),fp)!=NULL)
+    {
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        if(strcmp(b.name,bookname)==0)
+    {
+        fclose(fp);
+        return b.totalCopies-b.availableCopies;
+    }
+    }
+    fclose(fp);
+    return 0;
+}
+
+
+
+ 

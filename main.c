@@ -13,6 +13,8 @@
 #include "output.h"
 #include "search.h"
 #include "borrow.h"
+#include "guihuan.h"
+#include "remind.h"
 
 
 // 程序主入口
@@ -23,6 +25,7 @@ int main()
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
     int choice; // 用户菜单选择
+    remind();
 
     // 主循环：反复显示菜单直到用户选择退出
     do {
@@ -34,6 +37,8 @@ int main()
         printf("4. 按借阅次数排序显示\n");
         printf("5. 输出信息\n");
         printf("6. 借阅图书\n");
+        printf("7. 归还图书\n");
+        printf("8. 查看归还提醒列表\n");
         printf("0. 退出\n");
         printf("==================================\n");
 
@@ -62,7 +67,13 @@ int main()
                 outputmenu();            // 输出图书信息到屏幕或文件
                 break;
             case 6:
-                borrow();
+                borrow();                // 借阅图书
+                break;
+            case 7:
+                guihuan();               // 归还图书
+                break;
+            case 8:
+                remindlook();                   // 查看归还提醒列表
                 break;
             case 0:
                 printf("再见！\n");       // 退出程序

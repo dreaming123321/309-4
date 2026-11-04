@@ -15,7 +15,7 @@ void borrow()
     char choose;char choose1;
     char bookname[100]={0}; int borrowcount=0; char peoplename[100]={0};char borrowtime[15]={0};char guihuantime[100]={0};char sid[20]={0};
     printf("请输入借阅书名：");
-    scanf("%s", bookname);
+    scanf(" %s", bookname);
     if(lookname(bookname)==0)
     {
         printf("该书不存在,无法借阅");
@@ -34,24 +34,24 @@ void borrow()
         if(choose=='y')           //字符串用双引号，单个字符用单引号
         {
            printf("请输入借阅数量：\n");
-           scanf("%d",&borrowcount);
+           scanf(" %d",&borrowcount);
            if(borrowcount>lookcount(bookname))
            {
             printf("借阅数量不能大于可借数量");
             return;
            }
            printf("请输入借阅人姓名：\n");
-           scanf("%s",peoplename);
+           scanf(" %s",peoplename);
 
            printf("请输入借阅人学号：\n",sid);
-           scanf("%s",sid);
+           scanf(" %s",sid);
 
            printf("请输入借阅日期；(格式：2026-11-01)\n");        //尽量按照这个日期格式
-           scanf("%s",borrowtime);
+           scanf(" %s",borrowtime);
            while(strlen(borrowtime)!=10 || borrowtime[4]!='-' || borrowtime[7]!='-')
            {
             printf("你的日期格式输入错误,严格按照2026-11-01来写:");
-            scanf("%s",borrowtime);
+            scanf(" %s",borrowtime);
            }
            strcpy(guihuantime,jisuan_guihuantime(borrowtime));        //strcpy(A,B)将B的内容复制到A中
            printf("应归还日期为：%s\n",guihuantime);
@@ -62,8 +62,8 @@ void borrow()
         }  
         saveborrow(bookname,sid,peoplename,borrowtime,guihuantime,borrowcount);           //写入借阅的borrow.txt文件
         updatebook(bookname,borrowcount);
-        printf("是否要继续借阅：(y/n)");
-           scanf("%c",&choose1);
+        printf("是否要继续借阅：(y/n):\n");
+           scanf(" %c",&choose1);
            if(choose1=='y')
            {
             borrow();
@@ -147,7 +147,7 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         book[i]=b;
         if(strcmp(b.name,bookname)==0)
     {
@@ -170,7 +170,7 @@ void updatebook(char *bookname,int change)   //change 为正的话代表借出�
     }
     for(i=0;i<count;i++)
     {
-        fprintf(fp2,"%s %s %s %d %d %d\n",book[i].id,book[i].name,book[i].leibie,book[i].totalCopies,book[i].availableCopies,book[i].borrowCount);
+        fprintf(fp2,"%s %s %s %f %d %d %d\n",book[i].id,book[i].name,book[i].leibie,book[i].price,book[i].totalCopies,book[i].availableCopies,book[i].borrowCount);
     }
     fclose(fp2);
 
@@ -195,7 +195,7 @@ int lookname(char *bookname)                  //图书存在返回1，不存在�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
         if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
@@ -219,7 +219,7 @@ int lookcount(char *bookname)                  //图书存在返回借书数目�
     }
     while(fgets(line,sizeof(line),fp)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
           if(strcmp(b.name,bookname)==0)
     {
         fclose(fp);
