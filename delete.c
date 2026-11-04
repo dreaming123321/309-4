@@ -24,7 +24,7 @@ int deletebook(void)
     }
     while(fgets(line,sizeof(line),bookfile)!=NULL)
     {
-        sscanf(line,"%19s %99s %49s %d %d %d",b.id,b.name,b.leibie,&b.totalCopies,&b.availableCopies,&b.borrowCount);
+        sscanf(line,"%19s %99s %49s %f %d %d %d",b.id,b.name,b.leibie,&b.price,&b.totalCopies,&b.availableCopies,&b.borrowCount);
           if(strcmp(b.name,bookname)==0)
     {
         deleted = 1;

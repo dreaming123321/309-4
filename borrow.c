@@ -274,6 +274,3 @@ int idcreate(char *id,size_t size)          //id 传入需要生成的id对应�
     snprintf(id,size,"L%06d",max+1);
     return 1;
 }
-
-
-
