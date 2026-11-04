@@ -63,7 +63,7 @@ void borrow()
         if(saveborrow(bookname,sid,peoplename,
                borrowtime,guihuantime,borrowcount)==1)
 {
-    updatebook1(bookname,borrowcount);
+    updatebook(bookname,borrowcount);
 }
 else
 {

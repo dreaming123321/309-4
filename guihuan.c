@@ -4,9 +4,8 @@
 #include "book.h"
 int looktotal(char *bookname);                       //输出正在借阅的书的数量
 int saveguihuan(char *bookname,char *sid,char *peoplename,char *guihuantime1,int guihuancount);      //保存归还信息
-void updatebook1(char *bookname,int guihuancount);                                                  //更新book.txt文件
-
-
+void updatebook1(char *bookname,int guihuancount);      
+void guihuanrcheck(Borrow a);                                            //更新book.txt文件
 void guihuan()
 {
     char choose;char sid[20]={0};
@@ -310,5 +309,3 @@ void guihuanrcheck(Borrow a)
 
 
 
- 
->>>>>>> 4e714c2748aa92c915401e2d48ca633099df430d
