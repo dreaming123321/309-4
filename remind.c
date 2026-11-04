@@ -7,6 +7,8 @@
 int timecha(char *guihuantime1);
 char *todayis();
 void remind();
+void remindlook();
+
 void remindlook()
 {
     Borrow b;
@@ -41,6 +43,7 @@ void remind()
     while(fgets(line1,sizeof(line1),fp)!=NULL)
     {
         sscanf(line1,"%19s %99s %19s %99s %14s %14s %d %d %9s",b.borrowid,b.bookname,b.sid,b.peoplename,b.borrowtime,b.guihuantime,&b.borrowcount,&b.havetime,b.status);
+        if(strcmp(b.status,"已归还")!=0 && timecha(b.guihuantime)<=7 && b.borrowcount>0)
         tmp[j]=b;
         j++;
     }
