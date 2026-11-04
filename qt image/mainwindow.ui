@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1100</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>650</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>图书馆管理系统</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTabWidget" name="mainTabs">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="bookTab">
+       <attribute name="title">
+        <string>图书管理</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="bookLayout">
+        <item>
+         <layout class="QHBoxLayout" name="bookToolbar">
+          <item>
+           <widget class="QLineEdit" name="searchEdit">
+            <property name="placeholderText">
+             <string>输入书名 / 编号 / 类别筛选</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="refreshButton">
+            <property name="text">
+             <string>刷新</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="sortButton">
+            <property name="text">
+             <string>按借阅次数排序</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="addButton">
+            <property name="text">
+             <string>添加图书...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="deleteButton">
+            <property name="text">
+             <string>删除选中</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="bookTable"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="borrowTab">
+       <attribute name="title">
+        <string>借阅管理</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="borrowLayout">
+        <item>
+         <layout class="QHBoxLayout" name="recordToolbar">
+          <item>
+           <widget class="QPushButton" name="borrowButton">
+            <property name="text">
+             <string>借阅图书...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="returnButton">
+            <property name="text">
+             <string>归还选中</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="refreshRecordsButton">
+            <property name="text">
+             <string>刷新</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="recordSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="recordTable"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="remindTab">
+       <attribute name="title">
+        <string>到期提醒</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="remindLayout">
+        <item>
+         <layout class="QHBoxLayout" name="remindToolbar">
+          <item>
+           <widget class="QPushButton" name="refreshRemindButton">
+            <property name="text">
+             <string>刷新提醒</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="remindSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="remindTable"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

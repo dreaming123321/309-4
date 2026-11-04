@@ -1,0 +1,5 @@
+D:/1/LibraryGui/ui-test-build/CMakeFiles/LibraryUiSmoke.dir
+D:/1/LibraryGui/ui-test-build/CMakeFiles/edit_cache.dir
+D:/1/LibraryGui/ui-test-build/CMakeFiles/rebuild_cache.dir
+D:/1/LibraryGui/ui-test-build/CMakeFiles/LibraryUiSmoke_autogen_timestamp_deps.dir
+D:/1/LibraryGui/ui-test-build/CMakeFiles/LibraryUiSmoke_autogen.dir

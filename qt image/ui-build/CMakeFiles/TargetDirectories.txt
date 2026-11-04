@@ -1,0 +1,5 @@
+D:/1/LibraryGui/ui-build/CMakeFiles/LibraryGui.dir
+D:/1/LibraryGui/ui-build/CMakeFiles/edit_cache.dir
+D:/1/LibraryGui/ui-build/CMakeFiles/rebuild_cache.dir
+D:/1/LibraryGui/ui-build/CMakeFiles/LibraryGui_autogen_timestamp_deps.dir
+D:/1/LibraryGui/ui-build/CMakeFiles/LibraryGui_autogen.dir

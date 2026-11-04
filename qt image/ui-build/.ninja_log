@@ -1,0 +1,17 @@
+# ninja log v6
+84	2258	8154664263420236	LibraryGui_autogen/timestamp	eb3ec2f0331fc2b6
+84	2258	8154664263420236	LibraryGui_autogen/mocs_compilation.cpp	eb3ec2f0331fc2b6
+84	2258	8154664263420236	D:/1/LibraryGui/ui-build/LibraryGui_autogen/timestamp	eb3ec2f0331fc2b6
+84	2258	8154664263420236	D:/1/LibraryGui/ui-build/LibraryGui_autogen/mocs_compilation.cpp	eb3ec2f0331fc2b6
+2272	7986	8154664266243999	CMakeFiles/LibraryGui.dir/LibraryGui_autogen/mocs_compilation.cpp.obj	4f8c42ac41b227f9
+2286	8347	8154664266384960	CMakeFiles/LibraryGui.dir/main.cpp.obj	ee265971c6002f7e
+2325	12795	8154664266770120	CMakeFiles/LibraryGui.dir/libraryshell.cpp.obj	23fab844af0e745d
+2304	14607	8154664266563154	CMakeFiles/LibraryGui.dir/mainwindow.cpp.obj	caced3e73ba0c418
+14609	15575	8154664389611371	LibraryGui.exe	6f62029b9c2c5234
+149	875	8154667262802596	LibraryGui_autogen/timestamp	eb3ec2f0331fc2b6
+149	875	8154667262802596	LibraryGui_autogen/mocs_compilation.cpp	eb3ec2f0331fc2b6
+149	875	8154667262802596	D:/1/LibraryGui/ui-build/LibraryGui_autogen/timestamp	eb3ec2f0331fc2b6
+149	875	8154667262802596	D:/1/LibraryGui/ui-build/LibraryGui_autogen/mocs_compilation.cpp	eb3ec2f0331fc2b6
+894	14641	8154667270240808	CMakeFiles/LibraryGui.dir/libraryshell.cpp.obj	23fab844af0e745d
+879	17687	8154667270095253	CMakeFiles/LibraryGui.dir/mainwindow.cpp.obj	caced3e73ba0c418
+17690	18300	8154667438241069	LibraryGui.exe	6f62029b9c2c5234
